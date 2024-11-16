@@ -120,7 +120,7 @@ def retrieve_answers_with_llm_model(query):
     response = generate_response(input_ids)
     return response
 
-# # Test a query
-# input_query = "What are the priorities of 2023-2024 budget?"
-# response = retrieve_answers_with_llm_model(input_query)
-# print(f"Response:\n{response}")
+# Test a query
+input_query = "What are the priorities of 2023-2024 budget?"
+response = retrieve_answers_with_llm_model(input_query)
+print(f"Response:\n{response}")

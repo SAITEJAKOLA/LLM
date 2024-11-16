@@ -8,7 +8,7 @@ def initialize_session_state():
 
 def main():
     """Main Streamlit app."""
-    st.title("Lynx Genine")
+    st.title("Lynx Genie")
     
     # Initialize session state
     initialize_session_state()
