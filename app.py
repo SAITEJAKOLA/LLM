@@ -25,10 +25,13 @@ def main():
             st.markdown(prompt)
         st.session_state.messages.append({"role": "user", "content": prompt})
 
+        # Prepare chat history with the last two messages
+        chat_history = [f"{message['role']}: {message['content']}" for message in st.session_state.messages[-2:]]
+
         # Generate and display assistant response
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                response = retrieve_answers_with_llm_model(prompt)
+                response = retrieve_answers_with_llm_model(prompt, chat_history)
             st.markdown(response)
         st.session_state.messages.append({"role": "assistant", "content": response})
 

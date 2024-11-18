@@ -100,27 +100,32 @@ index_name = "llmchat"
 vectorstore = PineconeVectorStore.from_existing_index(index_name, embeddings)
 
 # Tokenize and generate responses
-def tokenize_input(prompt, context):
-    combined_input = f"Context: {context}\n\nQuestion: {prompt}"
+def tokenize_input(prompt, context, chat_history):
+    combined_input = f"Context: {context}\n\n Chat_History: {chat_history}\n\n Question: {prompt}"
     return tokenizer(combined_input, return_tensors="pt").to(device)
 
 def generate_response(input_ids):
     outputs = llm_model.generate(input_ids=input_ids["input_ids"], max_new_tokens=512)
     full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    print("Full Response: ", full_response)
-    answer = full_response.split("Answer:")[-1].strip()
-    print("Answer: ", answer )
+    pattern = r"Answer: (.+)"
+    match = re.search(pattern, full_response, re.DOTALL)
+    if match:
+        answer = match.group(1).strip()
+    else:
+        print("Answer not found in the given text.")
+        print("Answer: ", answer )
     return answer
 
 # Retrieve and process queries
-def retrieve_answers_with_llm_model(query):
+def retrieve_answers_with_llm_model(query, chat_history):
     results = vectorstore.similarity_search(query, k=4)
     context = "\n".join([doc.page_content for doc in results])
-    input_ids = tokenize_input(query, context)
+    input_ids = tokenize_input(query, context, chat_history)
     response = generate_response(input_ids)
     return response
 
 # Test a query
-input_query = "What are the priorities of 2023-2024 budget?"
-response = retrieve_answers_with_llm_model(input_query)
+input_query = "Give me pictorial representation of India's 2023-2024 Budget."
+chat_history = ""
+response = retrieve_answers_with_llm_model(input_query, chat_history)
 print(f"Response:\n{response}")
