@@ -107,13 +107,9 @@ def tokenize_input(prompt, context, chat_history):
 def generate_response(input_ids):
     outputs = llm_model.generate(input_ids=input_ids["input_ids"], max_new_tokens=512)
     full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    pattern = r"Answer: (.+)"
-    match = re.search(pattern, full_response, re.DOTALL)
-    if match:
-        answer = match.group(1).strip()
-    else:
-        print("Answer not found in the given text.")
-        print("Answer: ", answer )
+    print("Full Response: ", full_response)
+    answer = full_response.split("Answer:")[-1].strip()
+    print("Answer: ", answer )
     return answer
 
 # Retrieve and process queries
@@ -124,8 +120,7 @@ def retrieve_answers_with_llm_model(query, chat_history):
     response = generate_response(input_ids)
     return response
 
-# Test a query
-input_query = "Give me pictorial representation of India's 2023-2024 Budget."
-chat_history = ""
-response = retrieve_answers_with_llm_model(input_query, chat_history)
-print(f"Response:\n{response}")
+# # Test a query
+# input_query = "What are the priorities of 2023-2024 budget?"
+# response = retrieve_answers_with_llm_model(input_query)
+# print(f"Response:\n{response}")
