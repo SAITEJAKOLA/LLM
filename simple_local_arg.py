@@ -108,15 +108,28 @@ def generate_response(input_ids):
     outputs = llm_model.generate(input_ids=input_ids["input_ids"], max_new_tokens=512)
     full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
     print("Full Response: ", full_response)
-    pattern = r"Answer: (.+)"
-    match = re.search(pattern, full_response, re.DOTALL)
-    if match:
-        answer = match.group(1).strip()
+
+    # Check for Table pattern
+    table_pattern = r"\*\*Table:\*\*\n(.+)"
+    answer_pattern = r"Answer: (.+)"
+    
+    table_match = re.search(table_pattern, full_response, re.DOTALL)
+    answer_match = re.search(answer_pattern, full_response, re.DOTALL)
+    
+    if table_match:
+        table = table_match.group(1).strip()
+        print("Extracted Table: ", table)
+        return table
+    elif answer_match:
+        answer = answer_match.group(1).strip()
+        print("Extracted Answer: ", answer)
         return answer
     else:
-        answer = full_response.split("Answer:")[-1].strip()
-        print("Answer: ", answer )
-        return answer
+        # Fallback: Try splitting if no clear pattern is found
+        fallback_answer = full_response.split("Answer:")[-1].strip()
+        print("Fallback Answer: ", fallback_answer)
+        return fallback_answer
+
 
 # Retrieve and process queries
 def retrieve_answers_with_llm_model(query, chat_history):
