@@ -108,9 +108,15 @@ def generate_response(input_ids):
     outputs = llm_model.generate(input_ids=input_ids["input_ids"], max_new_tokens=512)
     full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
     print("Full Response: ", full_response)
-    answer = full_response.split("Answer:")[-1].strip()
-    print("Answer: ", answer )
-    return answer
+    pattern = r"Answer: (.+)"
+    match = re.search(pattern, full_response, re.DOTALL)
+    if match:
+        answer = match.group(1).strip()
+        return answer
+    else:
+        answer = full_response.split("Answer:")[-1].strip()
+        print("Answer: ", answer )
+        return answer
 
 # Retrieve and process queries
 def retrieve_answers_with_llm_model(query, chat_history):
