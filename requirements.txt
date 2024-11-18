@@ -1,16 +1,11 @@
-unstructured
-tiktoken
-openai
 langchain
 pandas
 numpy
 pinecone-client
 python-dotenv
 langchain-community
-huggingface_hub
 langchain_huggingface
 PyMuPDF
 tqdm
 random
-pandas
 spacy
