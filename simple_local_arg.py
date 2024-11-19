@@ -135,11 +135,11 @@ def generate_response(input_ids):
 def retrieve_answers_with_llm_model(query, chat_history):
     results = vectorstore.similarity_search(query, k=4)
     context = "\n".join([doc.page_content for doc in results])
-    input_ids = tokenize_input(query, context, chat_history)
+    input_ids = tokenize_input(query, context, "")
     response = generate_response(input_ids)
     return response
 
 # # Test a query
-# input_query = "What are the priorities of 2023-2024 budget?"
-# response = retrieve_answers_with_llm_model(input_query)
+# input_query = "How can a fleet manager create a new user in Lynx Fleet?"
+# response = retrieve_answers_with_llm_model(input_query, "")
 # print(f"Response:\n{response}")
