@@ -16,7 +16,15 @@ def extract_asset_id_from_prompt(prompt):
 
 def main():
     """Main Streamlit app."""
-    st.title("Lynx Genie")
+    # Add the ribbon with the title
+    st.markdown(
+        """
+        <div style="background-color:#001665; padding:10px; display:flex; justify-content:center;">
+            <h1 style="color:white; margin:0;">Lynx Genie</h1>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     # Initialize session state
     initialize_session_state()
 
