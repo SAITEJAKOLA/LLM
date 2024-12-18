@@ -6,7 +6,7 @@ from simple_local_arg import retrieve_answers_with_llm_model
 load_dotenv()
 def fetch_asset_details(asset_name):
     api_key = os.environ.get("LYNX_API_KEY")
-    api_url = f"https://api.dev.fleet.lynx.carrier.io/v1/asset-snapshots?assetNames={asset_name}"
+    api_url = f"https://{dummy}/v1/asset-snapshots?assetNames={asset_name}"
     headers = {
         "x-lynx-api-key":  api_key
     }
